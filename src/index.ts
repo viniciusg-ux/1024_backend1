@@ -211,6 +211,11 @@ console.log(erro)
  console.log(vetor2.filter((v)=>v.idade>=18))
  console.log(vetor2.find((v)=>v.idade>=18))
  console.log(vetor.find((x)=>x===4))
+
+ //MAP MAPEIA
+console.log(vetor2.map((v)=>v.idade))
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //ATIVIDADE DO TERE
 
