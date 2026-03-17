@@ -216,6 +216,31 @@ console.log(erro)
 console.log(vetor2.map((v)=>v.idade))
 
 
+
+
+// Obtém o cliente
+import mysql from 'mysql2/promise';
+
+// Cria a conexão com o Banco de Dados
+const connection = await mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  database: 'test',
+});
+
+// Utilizando espaços reservados (placeholders)
+try {
+  const queryPrepare = await connection.prepare(
+    'SELECT * FROM `pessoa`'
+  );
+const results = queryPrepare.execute([])
+  console.log(results);
+} catch (err) {
+  console.log(err);
+}
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //ATIVIDADE DO TERE
 
