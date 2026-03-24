@@ -198,7 +198,7 @@ console.log(delvo)
 catch(erro){
 console.log(erro)
 }
-*/
+
 
  const vetor:number[] = [1,2,3,4];
  const vetor2:{id:number,nome:string,idade:number}[]=[
@@ -239,124 +239,62 @@ const results = queryPrepare.execute([])
   console.log(err);
 }
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//ATIVIDADE DO TERE
-
-/* 
- * Exercício 01 - cria um novo vetor com os valores do vetor original mais dois novos valores
- * Nome da função - criaNovoVetor
- * Crie uma função que retorne um novo vetor com os valores do vetor original mais dois novos valores
- * @param {number[]} vetor Vetor de números
- * @param {number} valor1 Prim-eiro valor a ser adicionado
- * @param {number} valor2 Segundo valor a ser adicionado
- * @returns {number[]} Retorna um novo vetor com os valores do vetor original mais dois novos valores
- * @example
- * criaNovoVetor([1, 2, 3], 4, 5) // [1, 2, 3, 4, 5]
- * criaNovoVetor([1, 2, 3], 0, 0) // [1, 2, 3, 0, 0]
- 
-
-//Início do seu código
-
-
-function criaNovoVetor(v:number[], Valor1:number, Valor2:number):number[]{
-    const resultado:number[] = []
-
-    for( let i = 0; i < v.length; i++){
-        resultado.push(v[i]!)
-    }
-    resultado.push(Valor1)
-    resultado.push(Valor2)
-    
-    return resultado
-}
-
-
-const Valor1 = criaNovoVetor([1, 2, 3], 4, 5)
-console.log(`Novo vetor é: ${Valor1}`)
-
-const Valor2 = criaNovoVetor([6, 7, 8], 9 ,10)
-console.log(`Novo vetor é: ${Valor2}`)
-const resultado = criaNovoVetor([1, 2, 3, 4, 5], 6, 7)
-console.log(`Novo vetor é: ${resultado}`)
-
-
-console.log(`Novo vetor é: ${Valor2}`)
-
 */
-//Fim do seu código
+ //Get the client
+import mysql, { type RowDataPacket, type Connection } from 'mysql2/promise';
 
-/*
- * Exercício 02 - divisivelPor11
- * Nome da função - divisivelPor11
- * Crie uma função que retorna um array com os números divisíveis por 11 no intervalo
- * @param {number} min Número mínimo
- * @param {number} max Número máximo
- * @returns {number[]} Retorna um array com os números divisíveis por 11 no intervalo
- * @example
- *  divisivelPor11(1, 100) // [11, 22, 33, 44, 55, 66, 77, 88, 99]
- *  
- * divisivelPor11(11, 110) // [11, 22, 33, 44, 55, 66, 77, 88, 99, 110]
- 
 
-//Início do seu código
-function divisivelPor11(Minimo:number , Maximo:number){
-    const vetorDivisiveis11:number[] = []
-    for( let i = Minimo; i < Maximo; i++){
-        if(1%11===0){
-            vetorDivisiveis11.push(i)
+import express from 'express';
+const app = express()
+
+
+//Como cria uma rota no express?
+app.get("/pessoas", async (req,res)=> {
+    let connection: Connection | null = null
+    try {
+const connection = await mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  database: 'luademel',
+});
+
+
+// Using placeholders
+
+
+//   const result =
+//     await connection
+//     .execute('INSERT INTO pessoa (id,nome) VALUES (?,?)',[3,"Maria"])
+//   console.log(result)
+
+
+  const [dados,campos] = await connection.execute<IPessoa[]>('SELECT * FROM pessoa')
+  res.status(200).json(dados)
+
+
+      await connection.end();
+} catch (err) {
+    //TODO:
+    console.log(err);
+    if(connection){
+        await (connection as Connection).end();
         }
     }
-    return vetorDivisiveis11
-}
-*/
-//Fim do seu código
+})
+app.post("/pessoas",(req,res)=>{
+    //pegar as informações do usuario =>REQ.body
+    //conectar com o banco
+    //inserir
+    //retonrnar algo que indique que deu certo
+ })
 
-/*
- *  Exercício 03 - maioresDeIdade
- * Nome da função - maioresDeIdade
- * Crie uma função que retorna um array com os objetos com idade maior que 18
- * @param {vetor:Pessoa[]} vetor Vetor de objetos com id, nome e idade
- * @returns {Pessoa[]} Retorna um array com os objetos com idade maior que 18
- * @example
- * 
- * const pessoa1 = {id: 1, nome: 'João', idade: 20}
- * const pessoa2 = {id: 2, nome: 'Maria', idade: 18}
- * const pessoa3 = {id: 3, nome: 'José', idade: 17}
- * maioresDeIdade([pessoa1, pessoa2, pessoa3]) // [pessoa1, pessoa2]
- 
-interface Pessoa{
-    id: number,
-    nome: string,
-    idade: number
-}
-
-//Início do seu código
+app.listen(8000,()=>{
+    console.log("Iniciando o servidor na porta 8000")
+})
 
 
-//Fim do seu código
+interface IPessoa extends RowDataPacket{
+    id:number,
+    nome:string,
+}
 
-
-function criaNovoVetor2(vetor:number[], valor1:number, valor2:number){
-    return [...vetor,valor1,valor2]
-}
-console.log(criaNovoVetor2([1,2,3],0,0))
-///
-function criaNovoVetor3(vetor:number[], valor1:number, valor2:number){
-   const v = vetor.map(x=>x*1)//cria uma copia do vetor (MAP) e da pra multiplicar
-   v.push(valor1,valor2)
-   return v
-}
-console.log(criaNovoVetor3([1,2,3],0,0))
-////
-function transformar(x:number){
-    return x*2
-}
-function criaNovoVetor4(vetor:number[], valor1:number, valor2:number){
-   const v = vetor.map(transformar)//chamando a função dentro da função
-   v.push(valor1,valor2)
-   return v
-}
-console.log(criaNovoVetor4([1,2,3],0,0))
-*/
